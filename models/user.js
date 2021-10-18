@@ -61,24 +61,32 @@ module.exports = (sequelize, DataTypes) => {
         notNull: {
           msg: "Please provide a password"
         },
+        notEmpty: {
+          msg: "Please provide a password"
+        },
+        len: {
+          args: [6,20],
+          msg:'Your password must be between 6 and 20 characters long.'
+        }
       },
-     
-      set(val) {
-        //emulates the len validation TODO: this erases all other errors, has to be fixed...
-        if ( val.length >= 6 && val.length <= 20 ){
-          const hashedPassword = bcrypt.hashSync(val, 10)
-          this.setDataValue('password', hashedPassword)
-      } else {
-        const error = new Error('Your password must be between 6 and 20 characters long.')
-        error.status = 400
-        throw error
-      }
-      },
- 
     }
-  } , {
+      
+         
+ 
+    
+  }, {
+    //beforeCreate hook will execute after validation, hashing the password.
+    hooks: {
+      beforeCreate:  (user) => 
+      (user.password =  bcrypt.hashSync(user.password, 10))
+    },
     sequelize,
     modelName: 'User',
-  });
+
+  }
+   
+  
+    
+  );
   return User;
 };

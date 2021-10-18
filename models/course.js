@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        isNull: {
+        notNull: {
           msg: 'Please provide a title'
         },
         notEmpty: {
@@ -32,7 +32,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.TEXT,
       allowNull: false,
       validate: {
-        isNull: {
+        notNull: {
           msg: 'Please provide a description'
         },
         notEmpty: {
@@ -45,7 +45,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        isNull: {
+        notNull: {
           msg: 'Please provide an estimated completion time.'
         },
         notEmpty: {
@@ -58,7 +58,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        isNull: {
+        notNull: {
           msg: 'Please provide the materials needed for this course.'
         },
         notEmpty: {

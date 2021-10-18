@@ -2,6 +2,7 @@ const auth = require('basic-auth')
 const bcrypt = require('bcrypt')
 const {User} = require('../models')
 
+//middleware for protecting routes. From the teamtreehouse workshop, thanks!
 exports.authenticateUser = async (req, res, next) => {
     let message
     const credentials = auth(req)
