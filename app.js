@@ -16,23 +16,20 @@ const app = express();
 
 // setup morgan which gives us http request logging
 app.use(morgan("dev"));
+//testing and syncing the db
+(async () => {
+  try {
+    await sequelize.authenticate();
+    console.log("Connection to the DB established");
 
-(
-  //testing and syncing the db
-  async () => {
-    try {
-      await sequelize.authenticate();
-      console.log("Connection to the DB established");
-
-      await sequelize.sync();
-      console.log("Models synchronised");
-    } catch (error) {
-      console.error(error);
-      throw error;
-    }
+    await sequelize.sync();
+    console.log("Models synchronised");
+  } catch (error) {
+    console.error(error);
+    throw error;
   }
-)();
-app.use(express.json())
+})();
+app.use(express.json());
 // setup a friendly greeting for the root route
 app.get("/", (req, res) => {
   res.json({
