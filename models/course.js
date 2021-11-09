@@ -1,7 +1,5 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Course extends Model {
     /**
@@ -11,65 +9,48 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Course.belongsTo(models.User)
+      Course.belongsTo(models.User);
     }
-  };
-  Course.init({
-    title: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notNull: {
-          msg: 'Please provide a title'
+  }
+  Course.init(
+    {
+      title: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notNull: {
+            msg: "Please provide a title",
+          },
+          notEmpty: {
+            msg: "Please provide a title",
+          },
         },
-        notEmpty: {
-          msg: "Please provide a title"
-        }
-      }
-      
+      },
+      description: {
+        type: DataTypes.TEXT,
+        allowNull: false,
+        validate: {
+          notNull: {
+            msg: "Please provide a description",
+          },
+          notEmpty: {
+            msg: "Please provide a description",
+          },
+        },
+      },
+      estimatedTime: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+      materialsNeeded: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
     },
-    description: {
-      type: DataTypes.TEXT,
-      allowNull: false,
-      validate: {
-        notNull: {
-          msg: 'Please provide a description'
-        },
-        notEmpty: {
-          msg: "Please provide a description"
-        }
-      }
-      
-    },
-    estimatedTime: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notNull: {
-          msg: 'Please provide an estimated completion time.'
-        },
-        notEmpty: {
-          msg: "Please provide an estimated completion time."
-        }
-      }
-      
-    },
-    materialsNeeded: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notNull: {
-          msg: 'Please provide the materials needed for this course.'
-        },
-        notEmpty: {
-          msg: "Please provide the materials needed for this course."
-        }
-      }
-      
+    {
+      sequelize,
+      modelName: "Course",
     }
-  }, {
-    sequelize,
-    modelName: 'Course',
-  });
+  );
   return Course;
 };

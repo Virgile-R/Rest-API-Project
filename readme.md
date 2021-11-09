@@ -1,5 +1,5 @@
 # REST API PROJECT FOR THE FSJS TeamTreeHouse Course
-
+To run : ``npm start``
 ## Routes
 
 ### User routes

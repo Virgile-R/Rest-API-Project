@@ -45,7 +45,7 @@ router.post(
 router.get(
   "/courses",
   asyncHandler(async (req, res, next) => {
-    const courses = await Course.findAll({
+    let courses = await Course.findAll({
       attributes: [
         "id",
         "title",
@@ -54,8 +54,16 @@ router.get(
         "materialsNeeded",
         "userId",
       ],
+      // raw has to be set to true to add the user
+      raw: true,
     });
     if (courses) {
+      for (const course in courses) {
+        let courseOwner = await User.findByPk(courses[course].userId, {
+          attributes: ["firstName", "lastName", "emailAddress"],
+        });
+        courses[course].courseOwner = courseOwner;
+      }
       res.status(200).json(courses);
     } else {
       res.status(500).end();
@@ -79,9 +87,9 @@ router.get(
     });
     if (course) {
       const courseOwner = await User.findByPk(course.userId, {
-        attributes: ["firstName", "lastName"],
+        attributes: ["firstName", "lastName", "emailAddress"],
       });
-      course.courseOwner = courseOwner.firstName + " " + courseOwner.lastName;
+      course.courseOwner = courseOwner;
       res.status(200).json(course);
     } else {
       res.status(404).end();
@@ -129,12 +137,10 @@ router.put(
         await course.update(req.body);
         res.status(204).end();
       } else {
-        res
-          .status(403)
-          .json({
-            message:
-              "Access denied: you don't have permission to edit this course.",
-          });
+        res.status(403).json({
+          message:
+            "Access denied: you don't have permission to edit this course.",
+        });
       }
     } catch (error) {
       if (
@@ -161,12 +167,10 @@ router.delete(
         await course.destroy();
         res.status(204).end();
       } else {
-        res
-          .status(403)
-          .json({
-            message:
-              "Access denied: you don't have permission to delete this course.",
-          });
+        res.status(403).json({
+          message:
+            "Access denied: you don't have permission to delete this course.",
+        });
       }
     } catch (error) {
       next(error);
